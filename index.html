@@ -1,0 +1,1092 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>김건설 건설사업관리기술인 (특급) | 메인 포털</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Chart.js -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        brand: {
+                            50: '#f0f7ff',
+                            100: '#e0effe',
+                            500: '#0284c7',
+                            600: '#0369a1',
+                            700: '#075985',
+                            800: '#0c4a6e',
+                            900: '#0f172a',
+                        },
+                        accent: {
+                            500: '#f59e0b',
+                            600: '#d97706',
+                        }
+                    },
+                    fontFamily: {
+                        sans: ['Inter', 'Noto Sans KR', 'sans-serif'],
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@300;400;500;700;900&display=swap');
+        body { font-family: 'Noto Sans KR', sans-serif; }
+        .custom-scrollbar::-webkit-scrollbar { width: 6px; height: 6px; }
+        .custom-scrollbar::-webkit-scrollbar-track { background: #f1f5f9; }
+        .custom-scrollbar::-webkit-scrollbar-thumb { background: #cbd5e1; border-radius: 4px; }
+        .custom-scrollbar::-webkit-scrollbar-thumb:hover { background: #94a3b8; }
+        @media print {
+            body * { visibility: hidden; }
+            #printableReport, #printableReport * { visibility: visible; }
+            #printableReport { position: absolute; left: 0; top: 0; width: 100%; }
+            .no-print { display: none !important; }
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 dark:bg-slate-900 dark:text-slate-100 min-h-screen flex flex-col transition-colors duration-200">
+
+    <!-- Header Navbar -->
+    <header class="sticky top-0 z-40 bg-slate-900 text-white shadow-md border-b border-slate-800">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex items-center justify-between h-16">
+                <!-- Logo & Engineer Identity -->
+                <div class="flex items-center space-x-3 cursor-pointer" onclick="switchTab('profile')">
+                    <div class="w-10 h-10 rounded-lg bg-gradient-to-tr from-sky-500 to-amber-500 flex items-center justify-center font-bold text-xl text-white shadow">
+                        <i class="fa-solid fa-hard-hat"></i>
+                    </div>
+                    <div>
+                        <div class="flex items-center space-x-2">
+                            <span class="font-bold text-lg tracking-tight">김건설</span>
+                            <span class="px-2 py-0.5 text-xs font-semibold bg-sky-600 text-sky-100 rounded-full">특급 기술인</span>
+                            <span class="px-2 py-0.5 text-xs font-semibold bg-amber-600 text-amber-100 rounded-full">수석 감리원</span>
+                        </div>
+                        <p class="text-xs text-slate-400">건설사업관리(CM) 및 시공·품질·안전전문가</p>
+                    </div>
+                </div>
+
+                <!-- Navigation Links (Desktop) -->
+                <nav class="hidden md:flex space-x-1">
+                    <button onclick="switchTab('profile')" id="nav-profile" class="nav-btn px-3 py-2 rounded-md text-sm font-medium transition text-sky-400 bg-slate-800">
+                        <i class="fa-solid fa-id-card mr-1.5"></i>소개 & 경력
+                    </button>
+                    <button onclick="switchTab('log')" id="nav-log" class="nav-btn px-3 py-2 rounded-md text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-white transition">
+                        <i class="fa-solid fa-clipboard-check mr-1.5"></i>감리일지 작성
+                    </button>
+                    <button onclick="switchTab('calc')" id="nav-calc" class="nav-btn px-3 py-2 rounded-md text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-white transition">
+                        <i class="fa-solid fa-calculator mr-1.5"></i>현장 계산기
+                    </button>
+                    <button onclick="switchTab('forms')" id="nav-forms" class="nav-btn px-3 py-2 rounded-md text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-white transition">
+                        <i class="fa-solid fa-file-lines mr-1.5"></i>검측서식/자료실
+                    </button>
+                    <button onclick="switchTab('contact')" id="nav-contact" class="nav-btn px-3 py-2 rounded-md text-sm font-medium text-slate-300 hover:bg-slate-800 hover:text-white transition">
+                        <i class="fa-solid fa-envelope mr-1.5"></i>업무 문의
+                    </button>
+                </nav>
+
+                <!-- Mobile Menu Button & Quick Actions -->
+                <div class="flex items-center space-x-2">
+                    <button onclick="openDigitalCardModal()" class="px-3 py-1.5 text-xs font-medium bg-amber-500 hover:bg-amber-600 text-slate-950 rounded-lg font-bold transition flex items-center shadow-sm">
+                        <i class="fa-solid fa-qrcode mr-1.5"></i>디지털 명함
+                    </button>
+                    <button id="mobileMenuBtn" onclick="toggleMobileMenu()" class="md:hidden p-2 rounded-md text-slate-400 hover:text-white hover:bg-slate-800">
+                        <i class="fa-solid fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Navigation Drawer -->
+        <div id="mobileMenu" class="hidden md:hidden bg-slate-800 px-4 pt-2 pb-4 space-y-1 border-t border-slate-700">
+            <button onclick="switchTab('profile')" class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-white hover:bg-slate-700">
+                <i class="fa-solid fa-id-card w-6"></i>소개 & 경력
+            </button>
+            <button onclick="switchTab('log')" class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-slate-300 hover:bg-slate-700 hover:text-white">
+                <i class="fa-solid fa-clipboard-check w-6"></i>감리일지 작성
+            </button>
+            <button onclick="switchTab('calc')" class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-slate-300 hover:bg-slate-700 hover:text-white">
+                <i class="fa-solid fa-calculator w-6"></i>현장 계산기
+            </button>
+            <button onclick="switchTab('forms')" class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-slate-300 hover:bg-slate-700 hover:text-white">
+                <i class="fa-solid fa-file-lines w-6"></i>검측서식/자료실
+            </button>
+            <button onclick="switchTab('contact')" class="block w-full text-left px-3 py-2 rounded-md text-base font-medium text-slate-300 hover:bg-slate-700 hover:text-white">
+                <i class="fa-solid fa-envelope w-6"></i>업무 문의
+            </button>
+        </div>
+    </header>
+
+    <!-- Main Container -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+
+        <!-- TAB 1: Profile & Portfolio Section -->
+        <section id="tab-profile" class="tab-content space-y-6">
+            <!-- Hero Banner -->
+            <div class="relative bg-gradient-to-r from-slate-900 via-sky-900 to-slate-900 rounded-2xl p-6 sm:p-8 text-white shadow-xl overflow-hidden border border-slate-800">
+                <div class="absolute -right-10 -bottom-10 opacity-10 text-slate-100 text-9xl font-black pointer-events-none">
+                    <i class="fa-solid fa-building-user"></i>
+                </div>
+                <div class="relative z-10 flex flex-col md:flex-row items-center justify-between gap-6">
+                    <div class="flex flex-col sm:flex-row items-center sm:items-start gap-5 text-center sm:text-left">
+                        <img src="https://placehold.co/120x120/0284c7/ffffff?text=김건설" alt="프로필 사진" class="w-28 h-28 rounded-2xl object-cover ring-4 ring-sky-500/30 shadow-md">
+                        <div class="space-y-2">
+                            <div class="flex flex-wrap items-center justify-center sm:justify-start gap-2">
+                                <h1 class="text-2xl sm:text-3xl font-extrabold tracking-tight">김건설 (Kim Gun-seol)</h1>
+                                <span class="px-2.5 py-1 text-xs font-semibold bg-emerald-500/20 text-emerald-300 border border-emerald-500/30 rounded-md">현재 현장 감리수행 중</span>
+                            </div>
+                            <p class="text-sky-200 text-sm font-medium">건축시공기술사 / 건설사업관리 특급기술인 / 품질관리 특급</p>
+                            <p class="text-slate-300 text-xs sm:text-sm max-w-2xl leading-relaxed">
+                                22년간 대형 복합건축, 공동주택, 지식산업센터 현장에서 시공, 감리 및 품질·안전 관리를 전담해왔습니다. 
+                                원칙에 충실한 검측 업무와 디지털 일지 관리를 통해 안전사고 제로와 최상의 시공 품질을 보장합니다.
+                            </p>
+                            <div class="pt-2 flex flex-wrap justify-center sm:justify-start gap-2">
+                                <span class="inline-flex items-center text-xs bg-slate-800/80 px-3 py-1 rounded-full text-slate-300 border border-slate-700">
+                                    <i class="fa-solid fa-phone text-sky-400 mr-1.5"></i>010-1234-5678
+                                </span>
+                                <span class="inline-flex items-center text-xs bg-slate-800/80 px-3 py-1 rounded-full text-slate-300 border border-slate-700">
+                                    <i class="fa-solid fa-envelope text-sky-400 mr-1.5"></i>cm_engineer@example.com
+                                </span>
+                                <span class="inline-flex items-center text-xs bg-slate-800/80 px-3 py-1 rounded-full text-slate-300 border border-slate-700">
+                                    <i class="fa-solid fa-location-dot text-sky-400 mr-1.5"></i>서울특별시 영등포구
+                                </span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="flex flex-row md:flex-col gap-3 w-full md:w-auto">
+                        <button onclick="switchTab('log')" class="flex-1 md:flex-none px-4 py-2.5 bg-sky-500 hover:bg-sky-600 text-white rounded-xl font-medium text-sm transition shadow-lg flex items-center justify-center">
+                            <i class="fa-solid fa-pen-to-square mr-2"></i>감리일지 작성하기
+                        </button>
+                        <button onclick="switchTab('contact')" class="flex-1 md:flex-none px-4 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 rounded-xl font-medium text-sm transition flex items-center justify-center">
+                            <i class="fa-solid fa-paper-plane mr-2"></i>기술자문 문의
+                        </button>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats KPI Cards -->
+            <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+                <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 flex items-center space-x-4">
+                    <div class="p-3 bg-sky-100 dark:bg-sky-900/50 text-sky-600 dark:text-sky-400 rounded-xl">
+                        <i class="fa-solid fa-briefcase text-2xl"></i>
+                    </div>
+                    <div>
+                        <div class="text-xs text-slate-500 dark:text-slate-400 font-medium">총 실무 경력</div>
+                        <div class="text-2xl font-bold text-slate-800 dark:text-slate-100">22년 4개월</div>
+                    </div>
+                </div>
+                <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 flex items-center space-x-4">
+                    <div class="p-3 bg-amber-100 dark:bg-amber-900/50 text-amber-600 dark:text-amber-400 rounded-xl">
+                        <i class="fa-solid fa-building-shield text-2xl"></i>
+                    </div>
+                    <div>
+                        <div class="text-xs text-slate-500 dark:text-slate-400 font-medium">수행 현장 수</div>
+                        <div class="text-2xl font-bold text-slate-800 dark:text-slate-100">18개 프로젝트</div>
+                    </div>
+                </div>
+                <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 flex items-center space-x-4">
+                    <div class="p-3 bg-emerald-100 dark:bg-emerald-900/50 text-emerald-600 dark:text-emerald-400 rounded-xl">
+                        <i class="fa-solid fa-shield-halved text-2xl"></i>
+                    </div>
+                    <div>
+                        <div class="text-xs text-slate-500 dark:text-slate-400 font-medium">무재해 달성 일수</div>
+                        <div class="text-2xl font-bold text-slate-800 dark:text-slate-100">3,450일</div>
+                    </div>
+                </div>
+                <div class="bg-white dark:bg-slate-800 p-5 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 flex items-center space-x-4">
+                    <div class="p-3 bg-indigo-100 dark:bg-indigo-900/50 text-indigo-600 dark:text-indigo-400 rounded-xl">
+                        <i class="fa-solid fa-award text-2xl"></i>
+                    </div>
+                    <div>
+                        <div class="text-xs text-slate-500 dark:text-slate-400 font-medium">자격/면허</div>
+                        <div class="text-2xl font-bold text-slate-800 dark:text-slate-100">6종 보유</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Qualification & Chart Grid -->
+            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                <!-- Licenses & Qualifications -->
+                <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700 flex flex-col justify-between">
+                    <div>
+                        <h2 class="text-lg font-bold mb-4 flex items-center text-slate-800 dark:text-slate-100">
+                            <i class="fa-solid fa-certificate text-amber-500 mr-2"></i> 자격 및 역량 등급
+                        </h2>
+                        <div class="space-y-3">
+                            <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-700/50 border border-slate-100 dark:border-slate-700 flex items-center justify-between">
+                                <div>
+                                    <div class="font-bold text-slate-800 dark:text-slate-200 text-sm">건설사업관리기술인 (특급)</div>
+                                    <div class="text-xs text-slate-500 dark:text-slate-400">한국건설기술인협회 | 건축분야</div>
+                                </div>
+                                <span class="px-2.5 py-1 text-xs font-bold bg-sky-100 dark:bg-sky-900/60 text-sky-700 dark:text-sky-300 rounded-lg">특급</span>
+                            </div>
+                            <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-700/50 border border-slate-100 dark:border-slate-700 flex items-center justify-between">
+                                <div>
+                                    <div class="font-bold text-slate-800 dark:text-slate-200 text-sm">건축기사 / 토목기사</div>
+                                    <div class="text-xs text-slate-500 dark:text-slate-400">한국산업인력공단</div>
+                                </div>
+                                <span class="px-2.5 py-1 text-xs font-bold bg-emerald-100 dark:bg-emerald-900/60 text-emerald-700 dark:text-emerald-300 rounded-lg">국가기술자격</span>
+                            </div>
+                            <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-700/50 border border-slate-100 dark:border-slate-700 flex items-center justify-between">
+                                <div>
+                                    <div class="font-bold text-slate-800 dark:text-slate-200 text-sm">건설안전기사 / 산업위생관리기사</div>
+                                    <div class="text-xs text-slate-500 dark:text-slate-400">안전 및 보건 전담 자격</div>
+                                </div>
+                                <span class="px-2.5 py-1 text-xs font-bold bg-amber-100 dark:bg-amber-900/60 text-amber-700 dark:text-amber-300 rounded-lg">안전전문</span>
+                            </div>
+                            <div class="p-3 rounded-xl bg-slate-50 dark:bg-slate-700/50 border border-slate-100 dark:border-slate-700 flex items-center justify-between">
+                                <div>
+                                    <div class="font-bold text-slate-800 dark:text-slate-200 text-sm">품질관리 최고급기술인</div>
+                                    <div class="text-xs text-slate-500 dark:text-slate-400">품질시험계획 및 검측인증</div>
+                                </div>
+                                <span class="px-2.5 py-1 text-xs font-bold bg-indigo-100 dark:bg-indigo-900/60 text-indigo-700 dark:text-indigo-300 rounded-lg">품질전문</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="mt-4 pt-4 border-t border-slate-100 dark:border-slate-700 text-xs text-slate-500 flex items-center justify-between">
+                        <span>최근 법정 교육이수: 2025.10</span>
+                        <span class="text-emerald-600 dark:text-emerald-400 font-semibold"><i class="fa-solid fa-check-circle mr-1"></i>교육 완료</span>
+                    </div>
+                </div>
+
+                <!-- Experience Breakdown Chart -->
+                <div class="lg:col-span-2 bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700">
+                    <div class="flex items-center justify-between mb-4">
+                        <h2 class="text-lg font-bold flex items-center text-slate-800 dark:text-slate-100">
+                            <i class="fa-solid fa-chart-pie text-sky-500 mr-2"></i> 프로젝트 분야별 수행 이력
+                        </h2>
+                        <span class="text-xs text-slate-500">총 18개 현장 / 약 4,800억원 규모</span>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4 items-center">
+                        <div class="h-56 relative">
+                            <canvas id="experienceChart"></canvas>
+                        </div>
+                        <div class="space-y-3 text-sm">
+                            <div class="flex justify-between items-center p-2 rounded-lg bg-sky-50 dark:bg-sky-950/40">
+                                <span class="flex items-center"><span class="w-3 h-3 rounded-full bg-sky-500 inline-block mr-2"></span>공동주택/아파트</span>
+                                <span class="font-bold">7건 (40%)</span>
+                            </div>
+                            <div class="flex justify-between items-center p-2 rounded-lg bg-emerald-50 dark:bg-emerald-950/40">
+                                <span class="flex items-center"><span class="w-3 h-3 rounded-full bg-emerald-500 inline-block mr-2"></span>지식산업센터/업무시설</span>
+                                <span class="font-bold">5건 (28%)</span>
+                            </div>
+                            <div class="flex justify-between items-center p-2 rounded-lg bg-amber-50 dark:bg-amber-950/40">
+                                <span class="flex items-center"><span class="w-3 h-3 rounded-full bg-amber-500 inline-block mr-2"></span>복합상업/물류시설</span>
+                                <span class="font-bold">4건 (22%)</span>
+                            </div>
+                            <div class="flex justify-between items-center p-2 rounded-lg bg-indigo-50 dark:bg-indigo-950/40">
+                                <span class="flex items-center"><span class="w-3 h-3 rounded-full bg-indigo-500 inline-block mr-2"></span>토목/인프라 현장</span>
+                                <span class="font-bold">2건 (10%)</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Project Timeline List -->
+            <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-6">
+                    <div>
+                        <h2 class="text-lg font-bold text-slate-800 dark:text-slate-100 flex items-center">
+                            <i class="fa-solid fa-list-check text-amber-500 mr-2"></i> 주요 사업 수행실적 타임라인
+                        </h2>
+                        <p class="text-xs text-slate-500">최근 감리 및 시공관리 담당 현장 목록입니다.</p>
+                    </div>
+                    <div class="flex space-x-1 bg-slate-100 dark:bg-slate-700 p-1 rounded-xl text-xs">
+                        <button onclick="filterTimeline('all')" class="timeline-filter active px-3 py-1.5 rounded-lg font-medium bg-white dark:bg-slate-800 text-sky-600 dark:text-sky-400 shadow-sm">전체</button>
+                        <button onclick="filterTimeline('cm')" class="timeline-filter px-3 py-1.5 rounded-lg font-medium text-slate-600 dark:text-slate-300 hover:text-slate-900">감리/CM</button>
+                        <button onclick="filterTimeline('construction')" class="timeline-filter px-3 py-1.5 rounded-lg font-medium text-slate-600 dark:text-slate-300 hover:text-slate-900">시공/검측</button>
+                    </div>
+                </div>
+
+                <div class="relative border-l-2 border-slate-200 dark:border-slate-700 ml-4 space-y-6">
+                    <!-- Item 1 -->
+                    <div class="timeline-item cm relative pl-6 group">
+                        <div class="absolute -left-2.5 top-1.5 w-5 h-5 rounded-full bg-sky-500 border-4 border-white dark:border-slate-800 group-hover:scale-110 transition"></div>
+                        <div class="bg-slate-50 dark:bg-slate-700/40 p-4 rounded-xl border border-slate-100 dark:border-slate-700">
+                            <div class="flex flex-wrap items-center justify-between gap-2 mb-1">
+                                <span class="px-2 py-0.5 text-xs font-bold bg-sky-100 text-sky-700 dark:bg-sky-900 dark:text-sky-300 rounded">2024.03 ~ 현재 (진행중)</span>
+                                <span class="text-xs font-semibold text-slate-500">발주처: 마곡개발(주) / 시공사: OO건설</span>
+                            </div>
+                            <h3 class="font-bold text-slate-800 dark:text-slate-100">마곡지구 D-28구역 지식산업센터 신축공사 건설사업관리</h3>
+                            <p class="text-xs text-slate-600 dark:text-slate-300 mt-1">
+                                지하 5층~지상 15층 / 연면적 48,500㎡ / 상주 책임감리원 및 건축 총괄 담당 (골조 검측, 감리일지 표준화, 안전점검 수행)
+                            </p>
+                        </div>
+                    </div>
+                    <!-- Item 2 -->
+                    <div class="timeline-item cm relative pl-6 group">
+                        <div class="absolute -left-2.5 top-1.5 w-5 h-5 rounded-full bg-emerald-500 border-4 border-white dark:border-slate-800 group-hover:scale-110 transition"></div>
+                        <div class="bg-slate-50 dark:bg-slate-700/40 p-4 rounded-xl border border-slate-100 dark:border-slate-700">
+                            <div class="flex flex-wrap items-center justify-between gap-2 mb-1">
+                                <span class="px-2 py-0.5 text-xs font-bold bg-emerald-100 text-emerald-700 dark:bg-emerald-900 dark:text-emerald-300 rounded">2021.08 ~ 2024.01</span>
+                                <span class="text-xs font-semibold text-slate-500">발주처: 송도개발공사 / 시공사: XX건설</span>
+                            </div>
+                            <h3 class="font-bold text-slate-800 dark:text-slate-100">인천 송도 스마트 바이오 타워 신축 건설공사 감리</h3>
+                            <p class="text-xs text-slate-600 dark:text-slate-300 mt-1">
+                                연구시설 및 오피스 복합동 / 사업비 1,200억원 / 품질보증체계 수립 및 무재해 890일 달성 완료
+                            </p>
+                        </div>
+                    </div>
+                    <!-- Item 3 -->
+                    <div class="timeline-item construction relative pl-6 group">
+                        <div class="absolute -left-2.5 top-1.5 w-5 h-5 rounded-full bg-amber-500 border-4 border-white dark:border-slate-800 group-hover:scale-110 transition"></div>
+                        <div class="bg-slate-50 dark:bg-slate-700/40 p-4 rounded-xl border border-slate-100 dark:border-slate-700">
+                            <div class="flex flex-wrap items-center justify-between gap-2 mb-1">
+                                <span class="px-2 py-0.5 text-xs font-bold bg-amber-100 text-amber-700 dark:bg-amber-900 dark:text-amber-300 rounded">2018.05 ~ 2021.06</span>
+                                <span class="text-xs font-semibold text-slate-500">발주처: LH 한국토지주택공사</span>
+                            </div>
+                            <h3 class="font-bold text-slate-800 dark:text-slate-100">하남 미사지구 A-12블록 공동주택(1,250세대) 건설공사</h3>
+                            <p class="text-xs text-slate-600 dark:text-slate-300 mt-1">
+                                건축총괄 검측 및 부대복리시설 시공품질 관리, 하자 제로화 우수 현장 표창 수상
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 2: Daily Supervision Log & Inspection Report Section -->
+        <section id="tab-log" class="tab-content hidden space-y-6">
+            <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 dark:border-slate-700 pb-4 mb-6">
+                    <div>
+                        <h2 class="text-xl font-bold text-slate-800 dark:text-slate-100 flex items-center">
+                            <i class="fa-solid fa-clipboard-check text-sky-500 mr-2.5"></i> 스마트 감리일지 및 검측 작성기
+                        </h2>
+                        <p class="text-xs text-slate-500 mt-0.5">현장에서 작성하고 즉시 출력 및 디지털 보고서로 변환할 수 있습니다.</p>
+                    </div>
+                    <div class="flex space-x-2">
+                        <button onclick="resetLogForm()" class="px-3 py-2 text-xs font-medium text-slate-600 dark:text-slate-300 bg-slate-100 dark:bg-slate-700 hover:bg-slate-200 rounded-xl transition">
+                            <i class="fa-solid fa-rotate-left mr-1"></i>초기화
+                        </button>
+                        <button onclick="generateReportPrint()" class="px-4 py-2 text-xs font-bold bg-sky-600 hover:bg-sky-700 text-white rounded-xl transition shadow flex items-center">
+                            <i class="fa-solid fa-print mr-1.5"></i>보고서 생성 & 인쇄
+                        </button>
+                    </div>
+                </div>
+
+                <form id="logForm" onsubmit="event.preventDefault();" class="space-y-6">
+                    <!-- Basic Info -->
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4 bg-slate-50 dark:bg-slate-700/30 p-4 rounded-xl border border-slate-200/80 dark:border-slate-700">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">작성 일자</label>
+                            <input type="date" id="logDate" class="w-full text-xs p-2.5 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 focus:ring-2 focus:ring-sky-500 outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">현장명</label>
+                            <input type="text" id="logSiteName" value="마곡지구 D-28구역 지식산업센터 신축공사" class="w-full text-xs p-2.5 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 focus:ring-2 focus:ring-sky-500 outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">날씨 및 기온</label>
+                            <div class="grid grid-cols-2 gap-2">
+                                <select id="logWeather" class="text-xs p-2.5 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 focus:ring-2 focus:ring-sky-500 outline-none">
+                                    <option value="맑음">☀️ 맑음</option>
+                                    <option value="구름조금">⛅ 구름조금</option>
+                                    <option value="흐림">☁️ 흐림</option>
+                                    <option value="비">🌧️ 비</option>
+                                    <option value="눈">❄️ 눈</option>
+                                </select>
+                                <input type="text" id="logTemp" value="24℃ / 15℃" placeholder="기온" class="text-xs p-2.5 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 focus:ring-2 focus:ring-sky-500 outline-none">
+                            </div>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">책임감리원 / 작성자</label>
+                            <input type="text" id="logAuthor" value="김건설 (특급감리원)" class="w-full text-xs p-2.5 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 focus:ring-2 focus:ring-sky-500 outline-none">
+                        </div>
+                    </div>
+
+                    <!-- Workforce & Equipment -->
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Workforce Table -->
+                        <div class="border border-slate-200 dark:border-slate-700 rounded-xl p-4 bg-white dark:bg-slate-800">
+                            <h3 class="text-sm font-bold text-slate-800 dark:text-slate-200 mb-3 flex items-center justify-between">
+                                <span><i class="fa-solid fa-users text-sky-500 mr-2"></i>금일 투입 인원 (명)</span>
+                                <span class="text-xs font-normal text-slate-500">총계: <strong id="totalWorkers" class="text-sky-600">38</strong>명</span>
+                            </h3>
+                            <div class="grid grid-cols-3 gap-2 text-xs">
+                                <div>
+                                    <label class="text-slate-500">형틀목공</label>
+                                    <input type="number" id="wf1" value="12" oninput="calcTotalWorkforce()" class="wf-input w-full p-2 border rounded-md dark:bg-slate-700 dark:border-slate-600">
+                                </div>
+                                <div>
+                                    <label class="text-slate-500">철근공</label>
+                                    <input type="number" id="wf2" value="10" oninput="calcTotalWorkforce()" class="wf-input w-full p-2 border rounded-md dark:bg-slate-700 dark:border-slate-600">
+                                </div>
+                                <div>
+                                    <label class="text-slate-500">콘크리트공</label>
+                                    <input type="number" id="wf3" value="6" oninput="calcTotalWorkforce()" class="wf-input w-full p-2 border rounded-md dark:bg-slate-700 dark:border-slate-600">
+                                </div>
+                                <div>
+                                    <label class="text-slate-500">비계공</label>
+                                    <input type="number" id="wf4" value="4" oninput="calcTotalWorkforce()" class="wf-input w-full p-2 border rounded-md dark:bg-slate-700 dark:border-slate-600">
+                                </div>
+                                <div>
+                                    <label class="text-slate-500">보통인부</label>
+                                    <input type="number" id="wf5" value="4" oninput="calcTotalWorkforce()" class="wf-input w-full p-2 border rounded-md dark:bg-slate-700 dark:border-slate-600">
+                                </div>
+                                <div>
+                                    <label class="text-slate-500">안전관리자</label>
+                                    <input type="number" id="wf6" value="2" oninput="calcTotalWorkforce()" class="wf-input w-full p-2 border rounded-md dark:bg-slate-700 dark:border-slate-600">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Equipment Input -->
+                        <div class="border border-slate-200 dark:border-slate-700 rounded-xl p-4 bg-white dark:bg-slate-800">
+                            <h3 class="text-sm font-bold text-slate-800 dark:text-slate-200 mb-3">
+                                <i class="fa-solid fa-truck-monster text-amber-500 mr-2"></i>금일 투입 장비 현황
+                            </h3>
+                            <textarea id="logEquipment" rows="3" class="w-full text-xs p-2.5 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 focus:ring-2 focus:ring-sky-500 outline-none" placeholder="예: 타워크레인 1대, 콘크리트 펌프카 1대, 레미콘 18대 (타설 108m³), 굴착기(0.6m³) 1대"></textarea>
+                        </div>
+                    </div>
+
+                    <!-- Main Work Done & Inspection Items -->
+                    <div class="space-y-4">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">금일 주요 공종 및 감리업무 수행내용</label>
+                            <textarea id="logWorkDone" rows="3" class="w-full text-xs p-3 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 focus:ring-2 focus:ring-sky-500 outline-none" placeholder="주요 작업 내역을 입력하세요...">- 지상 8층 8A구간 슬래브 철근배근 및 거푸집 설치 완료 검측 수행
+- 7층 기둥 및 벽체 콘크리트 타설 참관 (슬럼프 150mm, 공기량 4.5% 품질시험 적합확인)
+- 외부 낙하물방지망 및 개구부 안전덮개 상태 안전점검 실시</textarea>
+                        </div>
+
+                        <!-- Quality & Safety Checklist -->
+                        <div class="border border-slate-200 dark:border-slate-700 rounded-xl p-4 bg-slate-50 dark:bg-slate-700/20">
+                            <h3 class="text-sm font-bold text-slate-800 dark:text-slate-200 mb-3 flex items-center justify-between">
+                                <span><i class="fa-solid fa-list-check text-emerald-500 mr-2"></i>핵심 품질·안전 검측 항목 체크리스트</span>
+                                <span class="text-xs text-slate-500">필수 항목 점검</span>
+                            </h3>
+                            <div class="grid grid-cols-1 md:grid-cols-2 gap-3 text-xs">
+                                <label class="flex items-center space-x-2 bg-white dark:bg-slate-800 p-2.5 rounded-lg border border-slate-200 dark:border-slate-700 cursor-pointer">
+                                    <input type="checkbox" checked class="w-4 h-4 text-sky-600 rounded">
+                                    <span>철근 이음·정착 길이 및 피복두께 규격 준수 여부</span>
+                                </label>
+                                <label class="flex items-center space-x-2 bg-white dark:bg-slate-800 p-2.5 rounded-lg border border-slate-200 dark:border-slate-700 cursor-pointer">
+                                    <input type="checkbox" checked class="w-4 h-4 text-sky-600 rounded">
+                                    <span>콘크리트 타설 전 청소 상태 및 신구접합면 처리</span>
+                                </label>
+                                <label class="flex items-center space-x-2 bg-white dark:bg-slate-800 p-2.5 rounded-lg border border-slate-200 dark:border-slate-700 cursor-pointer">
+                                    <input type="checkbox" checked class="w-4 h-4 text-sky-600 rounded">
+                                    <span>거푸집 동바리 존치기간 및 가새 설치 안정성</span>
+                                </label>
+                                <label class="flex items-center space-x-2 bg-white dark:bg-slate-800 p-2.5 rounded-lg border border-slate-200 dark:border-slate-700 cursor-pointer">
+                                    <input type="checkbox" checked class="w-4 h-4 text-sky-600 rounded">
+                                    <span>고소작업자 안전대 착용 및 생명줄 체결 확인</span>
+                                </label>
+                            </div>
+                        </div>
+
+                        <!-- Instruction & Special Notes -->
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">시정지시사항 / 특기사항 (구두 및 문서 지시)</label>
+                            <input type="text" id="logInstructions" value="8층 슬래브 단부 개구부 안전난간대 즉시 보강 조치 지시 (현장 조치 완료 확인)" class="w-full text-xs p-2.5 rounded-lg border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800 focus:ring-2 focus:ring-sky-500 outline-none">
+                        </div>
+                    </div>
+                </form>
+            </div>
+
+            <!-- Print Preview Modal Container -->
+            <div id="printableReport" class="hidden bg-white text-slate-900 p-8 rounded-2xl shadow-xl max-w-4xl mx-auto border border-slate-300 space-y-6">
+                <!-- Printable Report Header -->
+                <div class="text-center border-b-2 border-slate-900 pb-4">
+                    <h1 class="text-2xl font-black underline underline-offset-8 decoration-2">건 설 사 업 관 리 감 리 일 지</h1>
+                    <p class="text-xs text-slate-600 mt-2" id="prSiteHeader">현장명: 마곡지구 D-28구역 지식산업센터 신축공사</p>
+                </div>
+
+                <!-- Summary Info Table -->
+                <table class="w-full text-xs border-collapse border border-slate-800">
+                    <tbody>
+                        <tr>
+                            <td class="bg-slate-100 border border-slate-800 p-2 font-bold w-1/6">일 자</td>
+                            <td class="border border-slate-800 p-2" id="prDate">2026-08-14</td>
+                            <td class="bg-slate-100 border border-slate-800 p-2 font-bold w-1/6">날씨 / 기온</td>
+                            <td class="border border-slate-800 p-2" id="prWeather">맑음 (24℃)</td>
+                            <td class="bg-slate-100 border border-slate-800 p-2 font-bold w-1/6">작성 감리원</td>
+                            <td class="border border-slate-800 p-2" id="prAuthor">김건설 (인)</td>
+                        </tr>
+                        <tr>
+                            <td class="bg-slate-100 border border-slate-800 p-2 font-bold">출력 인원</td>
+                            <td class="border border-slate-800 p-2" colspan="2" id="prWorkforce">총 38명 (목공 12, 철근 10, 콘크리트 6 등)</td>
+                            <td class="bg-slate-100 border border-slate-800 p-2 font-bold">투입 장비</td>
+                            <td class="border border-slate-800 p-2" colspan="2" id="prEquipment">타워크레인 1대, 펌프카 1대 등</td>
+                        </tr>
+                    </tbody>
+                </table>
+
+                <!-- Detailed Content -->
+                <div class="space-y-4 text-xs">
+                    <div>
+                        <h4 class="font-bold border-l-4 border-slate-800 pl-2 mb-1">1. 금일 주요 공종 및 검측 수행 내역</h4>
+                        <div id="prWorkDone" class="p-3 border border-slate-300 bg-slate-50 leading-relaxed whitespace-pre-line"></div>
+                    </div>
+                    <div>
+                        <h4 class="font-bold border-l-4 border-slate-800 pl-2 mb-1">2. 품질 및 안전 점검 결과</h4>
+                        <div class="p-3 border border-slate-300 bg-slate-50">
+                            <p>✓ 주요 검측 항목 양호 및 특이사항 없음 확인</p>
+                            <p id="prInstructions" class="mt-1 text-slate-800 font-medium"></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Signatures -->
+                <div class="pt-8 flex justify-between items-end border-t border-slate-300 text-xs">
+                    <div>건설사업관리기술인 확인필</div>
+                    <div class="text-right space-y-1">
+                        <div>책임감리원 : <span class="font-bold border-b border-slate-400 px-4">김 건 설</span> (서명)</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 3: Construction Calculators Section -->
+        <section id="tab-calc" class="tab-content hidden space-y-6">
+            <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700">
+                <div class="border-b border-slate-200 dark:border-slate-700 pb-4 mb-6">
+                    <h2 class="text-xl font-bold text-slate-800 dark:text-slate-100 flex items-center">
+                        <i class="fa-solid fa-calculator text-amber-500 mr-2.5"></i> 건설 현장 스마트 실무 계산기
+                    </h2>
+                    <p class="text-xs text-slate-500 mt-0.5">레미콘 물량, 철근 중량, 공정률 및 경사도를 손쉽게 산출하세요.</p>
+                </div>
+
+                <!-- Calculator Sub Tabs -->
+                <div class="flex border-b border-slate-200 dark:border-slate-700 space-x-4 mb-6">
+                    <button onclick="switchCalc('concrete')" id="calc-tab-concrete" class="calc-sub-btn border-b-2 border-sky-500 pb-2 text-sm font-bold text-sky-600 dark:text-sky-400">
+                        <i class="fa-solid fa-cubes mr-1.5"></i>레미콘 / 콘크리트
+                    </button>
+                    <button onclick="switchCalc('rebar')" id="calc-tab-rebar" class="calc-sub-btn border-b-2 border-transparent pb-2 text-sm font-medium text-slate-500 hover:text-slate-800 dark:hover:text-slate-200">
+                        <i class="fa-solid fa-bars-staggered mr-1.5"></i>철근 단위중량
+                    </button>
+                    <button onclick="switchCalc('spi')" id="calc-tab-spi" class="calc-sub-btn border-b-2 border-transparent pb-2 text-sm font-medium text-slate-500 hover:text-slate-800 dark:hover:text-slate-200">
+                        <i class="fa-solid fa-chart-line mr-1.5"></i>공정률 (SPI/CPI)
+                    </button>
+                    <button onclick="switchCalc('slope')" id="calc-tab-slope" class="calc-sub-btn border-b-2 border-transparent pb-2 text-sm font-medium text-slate-500 hover:text-slate-800 dark:hover:text-slate-200">
+                        <i class="fa-solid fa-ruler-combined mr-1.5"></i>경사도 / 구배
+                    </button>
+                </div>
+
+                <!-- Sub-Calc 1: Concrete Volume -->
+                <div id="calc-concrete" class="calc-box space-y-4">
+                    <div class="grid grid-cols-1 md:grid-cols-4 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">가로 (m)</label>
+                            <input type="number" id="concL" value="10" step="0.1" oninput="calcConcrete()" class="w-full p-2.5 text-xs rounded-lg border dark:bg-slate-700 dark:border-slate-600">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">세로 (m)</label>
+                            <input type="number" id="concW" value="15" step="0.1" oninput="calcConcrete()" class="w-full p-2.5 text-xs rounded-lg border dark:bg-slate-700 dark:border-slate-600">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">두께/높이 (m)</label>
+                            <input type="number" id="concH" value="0.2" step="0.01" oninput="calcConcrete()" class="w-full p-2.5 text-xs rounded-lg border dark:bg-slate-700 dark:border-slate-600">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">할증률 (%)</label>
+                            <input type="number" id="concExtra" value="3" step="0.5" oninput="calcConcrete()" class="w-full p-2.5 text-xs rounded-lg border dark:bg-slate-700 dark:border-slate-600">
+                        </div>
+                    </div>
+
+                    <div class="bg-sky-50 dark:bg-sky-950/50 p-4 rounded-xl border border-sky-100 dark:border-sky-800 grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
+                        <div>
+                            <div class="text-xs text-slate-500 dark:text-slate-400">순수 필요 체적</div>
+                            <div class="text-xl font-extrabold text-slate-800 dark:text-slate-100" id="resConcPure">30.00 m³</div>
+                        </div>
+                        <div>
+                            <div class="text-xs text-slate-500 dark:text-slate-400">할증 포함 체적</div>
+                            <div class="text-xl font-extrabold text-sky-600 dark:text-sky-400" id="resConcTotal">30.90 m³</div>
+                        </div>
+                        <div>
+                            <div class="text-xs text-slate-500 dark:text-slate-400">필요 레미콘 차수 (6m³/대)</div>
+                            <div class="text-xl font-extrabold text-amber-600 dark:text-amber-400" id="resConcTrucks">약 6 대</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sub-Calc 2: Rebar Weight -->
+                <div id="calc-rebar" class="calc-box hidden space-y-4">
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">철근 호칭 규격</label>
+                            <select id="rebarSize" onchange="calcRebar()" class="w-full p-2.5 text-xs rounded-lg border dark:bg-slate-700 dark:border-slate-600">
+                                <option value="0.560">D10 (0.560 kg/m)</option>
+                                <option value="0.995">D13 (0.995 kg/m)</option>
+                                <option value="1.560" selected>D16 (1.560 kg/m)</option>
+                                <option value="2.250">D19 (2.250 kg/m)</option>
+                                <option value="3.040">D22 (3.040 kg/m)</option>
+                                <option value="3.980">D25 (3.980 kg/m)</option>
+                                <option value="5.040">D29 (5.040 kg/m)</option>
+                                <option value="6.230">D32 (6.230 kg/m)</option>
+                            </select>
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">가닥수 / 본수 (개)</label>
+                            <input type="number" id="rebarCount" value="120" oninput="calcRebar()" class="w-full p-2.5 text-xs rounded-lg border dark:bg-slate-700 dark:border-slate-600">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">1본당 길이 (m)</label>
+                            <input type="number" id="rebarLen" value="8" step="0.5" oninput="calcRebar()" class="w-full p-2.5 text-xs rounded-lg border dark:bg-slate-700 dark:border-slate-600">
+                        </div>
+                    </div>
+
+                    <div class="bg-amber-50 dark:bg-amber-950/50 p-4 rounded-xl border border-amber-100 dark:border-amber-800 grid grid-cols-1 sm:grid-cols-2 gap-4 text-center">
+                        <div>
+                            <div class="text-xs text-slate-500 dark:text-slate-400">총 연장 길이</div>
+                            <div class="text-xl font-extrabold text-slate-800 dark:text-slate-100" id="resRebarLength">960 m</div>
+                        </div>
+                        <div>
+                            <div class="text-xs text-slate-500 dark:text-slate-400">산출 총 총중량</div>
+                            <div class="text-xl font-extrabold text-amber-600 dark:text-amber-400" id="resRebarWeight">1,497.6 kg (1.50 ton)</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sub-Calc 3: SPI Progress -->
+                <div id="calc-spi" class="calc-box hidden space-y-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">계획 공정률 (PV %)</label>
+                            <input type="number" id="planSpi" value="65.0" step="0.1" oninput="calcSpi()" class="w-full p-2.5 text-xs rounded-lg border dark:bg-slate-700 dark:border-slate-600">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">실시 공정률 (EV %)</label>
+                            <input type="number" id="actSpi" value="61.5" step="0.1" oninput="calcSpi()" class="w-full p-2.5 text-xs rounded-lg border dark:bg-slate-700 dark:border-slate-600">
+                        </div>
+                    </div>
+
+                    <div class="bg-slate-50 dark:bg-slate-700/40 p-4 rounded-xl border border-slate-200 dark:border-slate-700 grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
+                        <div>
+                            <div class="text-xs text-slate-500">공정 대비 달성률</div>
+                            <div class="text-xl font-extrabold text-slate-800 dark:text-slate-100" id="resSpiRate">94.6%</div>
+                        </div>
+                        <div>
+                            <div class="text-xs text-slate-500">공정 편차 (SV)</div>
+                            <div class="text-xl font-extrabold text-rose-500" id="resSpiDiff">-3.5% (지연)</div>
+                        </div>
+                        <div>
+                            <div class="text-xs text-slate-500">공정수행지수 (SPI)</div>
+                            <div class="text-xl font-extrabold text-amber-600" id="resSpiVal">0.95</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Sub-Calc 4: Slope -->
+                <div id="calc-slope" class="calc-box hidden space-y-4">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">수평거리 L (m)</label>
+                            <input type="number" id="slopeL" value="10" step="0.1" oninput="calcSlope()" class="w-full p-2.5 text-xs rounded-lg border dark:bg-slate-700 dark:border-slate-600">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">수직높이 H (m)</label>
+                            <input type="number" id="slopeH" value="1.5" step="0.1" oninput="calcSlope()" class="w-full p-2.5 text-xs rounded-lg border dark:bg-slate-700 dark:border-slate-600">
+                        </div>
+                    </div>
+
+                    <div class="bg-emerald-50 dark:bg-emerald-950/50 p-4 rounded-xl border border-emerald-100 dark:border-emerald-800 grid grid-cols-1 sm:grid-cols-3 gap-4 text-center">
+                        <div>
+                            <div class="text-xs text-slate-500 dark:text-slate-400">구배 경사율 (%)</div>
+                            <div class="text-xl font-extrabold text-slate-800 dark:text-slate-100" id="resSlopePercent">15.0 %</div>
+                        </div>
+                        <div>
+                            <div class="text-xs text-slate-500 dark:text-slate-400">경사 각도 (°)</div>
+                            <div class="text-xl font-extrabold text-emerald-600 dark:text-emerald-400" id="resSlopeDegree">8.53 °</div>
+                        </div>
+                        <div>
+                            <div class="text-xs text-slate-500 dark:text-slate-400">사면 연장거리</div>
+                            <div class="text-xl font-extrabold text-sky-600 dark:text-sky-400" id="resSlopeDiag">10.11 m</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 4: Standard Forms & Resources Section -->
+        <section id="tab-forms" class="tab-content hidden space-y-6">
+            <div class="bg-white dark:bg-slate-800 p-6 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 border-b border-slate-200 dark:border-slate-700 pb-4 mb-6">
+                    <div>
+                        <h2 class="text-xl font-bold text-slate-800 dark:text-slate-100 flex items-center">
+                            <i class="fa-solid fa-file-lines text-sky-500 mr-2.5"></i> 표준 감리 서식 및 기술 기준 자료실
+                        </h2>
+                        <p class="text-xs text-slate-500 mt-0.5">자주 사용되는 감리 양식 텍스트를 바로 복사하거나 미리보실 수 있습니다.</p>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                    <!-- Form Catalog Menu -->
+                    <div class="space-y-2">
+                        <button onclick="loadFormTemplate('inspect')" class="form-item-btn w-full text-left p-3 rounded-xl border border-sky-500 bg-sky-50 dark:bg-sky-950/40 text-sky-700 dark:text-sky-300 font-bold text-xs flex items-center justify-between">
+                            <span><i class="fa-solid fa-file-pen mr-2"></i>품질검측 요청서 서식</span>
+                            <i class="fa-solid fa-chevron-right text-xs"></i>
+                        </button>
+                        <button onclick="loadFormTemplate('report')" class="form-item-btn w-full text-left p-3 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700/50 text-slate-700 dark:text-slate-300 text-xs flex items-center justify-between">
+                            <span><i class="fa-solid fa-triangle-exclamation mr-2"></i>시정명령 / 지시서 양식</span>
+                            <i class="fa-solid fa-chevron-right text-xs"></i>
+                        </button>
+                        <button onclick="loadFormTemplate('status')" class="form-item-btn w-full text-left p-3 rounded-xl border border-slate-200 dark:border-slate-700 hover:bg-slate-50 dark:hover:bg-slate-700/50 text-slate-700 dark:text-slate-300 text-xs flex items-center justify-between">
+                            <span><i class="fa-solid fa-file-circle-check mr-2"></i>공사 실정보고서 템플릿</span>
+                            <i class="fa-solid fa-chevron-right text-xs"></i>
+                        </button>
+                    </div>
+
+                    <!-- Form Content Previewer -->
+                    <div class="md:col-span-2 bg-slate-50 dark:bg-slate-900 p-4 rounded-xl border border-slate-200 dark:border-slate-700 space-y-3">
+                        <div class="flex items-center justify-between">
+                            <h3 id="formTitle" class="font-bold text-sm text-slate-800 dark:text-slate-200">품질검측 요청서 표준 양식</h3>
+                            <button onclick="copyFormText()" class="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-white rounded-lg text-xs transition">
+                                <i class="fa-solid fa-copy mr-1"></i>서식 텍스트 복사
+                            </button>
+                        </div>
+                        <textarea id="formTextContent" rows="12" class="w-full font-mono text-xs p-3 rounded-lg border border-slate-300 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-800 dark:text-slate-200 outline-none leading-relaxed custom-scrollbar"></textarea>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- TAB 5: Contact Section -->
+        <section id="tab-contact" class="tab-content hidden space-y-6">
+            <div class="max-w-3xl mx-auto bg-white dark:bg-slate-800 p-6 sm:p-8 rounded-2xl shadow-sm border border-slate-200 dark:border-slate-700">
+                <div class="text-center space-y-2 mb-8">
+                    <h2 class="text-2xl font-bold text-slate-800 dark:text-slate-100">건설사업관리 및 자문 문의</h2>
+                    <p class="text-xs text-slate-500">감리 수행 요청, 현장 안전·품질 자문, 시공검측 컨설팅 메시지를 남겨주세요.</p>
+                </div>
+
+                <form onsubmit="handleContactSubmit(event)" class="space-y-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">성함 / 담당자명</label>
+                            <input type="text" required placeholder="홍길동" class="w-full p-2.5 text-xs rounded-lg border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 focus:bg-white outline-none">
+                        </div>
+                        <div>
+                            <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">연락처 (전화번호)</label>
+                            <input type="tel" required placeholder="010-0000-0000" class="w-full p-2.5 text-xs rounded-lg border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 focus:bg-white outline-none">
+                        </div>
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">소속 회사 / 발주처 / 현장명</label>
+                        <input type="text" placeholder="예: OO건설 개발사업부" class="w-full p-2.5 text-xs rounded-lg border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 focus:bg-white outline-none">
+                    </div>
+                    <div>
+                        <label class="block text-xs font-bold text-slate-700 dark:text-slate-300 mb-1">문의 내용</label>
+                        <textarea rows="4" required placeholder="프로젝트 인프라 현장 감리 자문 문의..." class="w-full p-2.5 text-xs rounded-lg border border-slate-300 dark:border-slate-600 bg-slate-50 dark:bg-slate-700 focus:bg-white outline-none"></textarea>
+                    </div>
+                    <button type="submit" class="w-full py-3 bg-sky-600 hover:bg-sky-700 text-white font-bold text-sm rounded-xl transition shadow-lg">
+                        <i class="fa-solid fa-paper-plane mr-2"></i>문의 내용 전송하기
+                    </button>
+                </form>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Digital Business Card Modal -->
+    <div id="cardModal" class="fixed inset-0 bg-slate-900/70 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-slate-800 rounded-2xl max-w-sm w-full p-6 text-center space-y-4 shadow-2xl relative border border-slate-200 dark:border-slate-700">
+            <button onclick="closeDigitalCardModal()" class="absolute top-4 right-4 text-slate-400 hover:text-slate-600">
+                <i class="fa-solid fa-xmark text-lg"></i>
+            </button>
+            <div class="w-16 h-16 bg-sky-600 rounded-2xl mx-auto flex items-center justify-center text-white text-2xl font-bold shadow-md">
+                <i class="fa-solid fa-hard-hat"></i>
+            </div>
+            <div>
+                <h3 class="font-extrabold text-lg text-slate-800 dark:text-slate-100">김건설 기술인</h3>
+                <p class="text-xs text-sky-600 dark:text-sky-400 font-semibold">건설사업관리 특급기술인 / 시공기사</p>
+            </div>
+            <div class="p-4 bg-slate-100 dark:bg-slate-700/50 rounded-xl space-y-2 text-xs text-left">
+                <div><i class="fa-solid fa-phone text-sky-500 w-5"></i>010-1234-5678</div>
+                <div><i class="fa-solid fa-envelope text-sky-500 w-5"></i>cm_engineer@example.com</div>
+                <div><i class="fa-solid fa-award text-sky-500 w-5"></i>경력 22년 / 수석감리원</div>
+            </div>
+            <div class="bg-slate-50 dark:bg-slate-900 p-3 rounded-xl inline-block border">
+                <img src="https://placehold.co/120x120/0f172a/ffffff?text=QR+Card" alt="QR코드 명함" class="w-28 h-28 mx-auto">
+                <p class="text-[10px] text-slate-400 mt-1">스캔하여 연락처 바로 저장</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Notification Toast -->
+    <div id="toast" class="fixed bottom-5 right-5 bg-slate-900 text-white px-4 py-3 rounded-xl shadow-2xl hidden items-center space-x-3 z-50 border border-slate-700 text-xs">
+        <i class="fa-solid fa-circle-check text-emerald-400 text-base"></i>
+        <span id="toastMsg">처리되었습니다.</span>
+    </div>
+
+    <script>
+        // Tab Navigation Switcher
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.getElementById(`tab-${tabId}`).classList.remove('hidden');
+
+            document.querySelectorAll('.nav-btn').forEach(btn => {
+                btn.classList.remove('text-sky-400', 'bg-slate-800');
+                btn.classList.add('text-slate-300');
+            });
+            const activeBtn = document.getElementById(`nav-${tabId}`);
+            if (activeBtn) {
+                activeBtn.classList.add('text-sky-400', 'bg-slate-800');
+            }
+
+            // Close mobile menu if open
+            document.getElementById('mobileMenu').classList.add('hidden');
+        }
+
+        function toggleMobileMenu() {
+            document.getElementById('mobileMenu').classList.toggle('hidden');
+        }
+
+        // Timeline Filter
+        function filterTimeline(type) {
+            document.querySelectorAll('.timeline-filter').forEach(btn => {
+                btn.classList.remove('bg-white', 'dark:bg-slate-800', 'text-sky-600', 'shadow-sm');
+                btn.classList.add('text-slate-600', 'dark:text-slate-300');
+            });
+            event.target.classList.add('bg-white', 'dark:bg-slate-800', 'text-sky-600', 'shadow-sm');
+
+            document.querySelectorAll('.timeline-item').forEach(item => {
+                if (type === 'all' || item.classList.contains(type)) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        }
+
+        // Chart Initialization
+        window.onload = function() {
+            // Set Today Date in Log
+            const today = new Date().toISOString().split('T')[0];
+            document.getElementById('logDate').value = today;
+
+            const ctx = document.getElementById('experienceChart').getContext('2d');
+            new Chart(ctx, {
+                type: 'doughnut',
+                data: {
+                    labels: ['공동주택/아파트', '지식산업센터', '복합상업시설', '토목/인프라'],
+                    datasets: [{
+                        data: [7, 5, 4, 2],
+                        backgroundColor: ['#0284c7', '#10b981', '#f59e0b', '#6366f1'],
+                        borderWidth: 0
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: {
+                        legend: { display: false }
+                    },
+                    cutout: '70%'
+                }
+            });
+
+            // Initial Calculations
+            calcConcrete();
+            calcRebar();
+            calcSpi();
+            calcSlope();
+            loadFormTemplate('inspect');
+        };
+
+        // Supervision Log Helper
+        function calcTotalWorkforce() {
+            const inputs = document.querySelectorAll('.wf-input');
+            let sum = 0;
+            inputs.forEach(i => sum += Number(i.value || 0));
+            document.getElementById('totalWorkers').innerText = sum;
+        }
+
+        function resetLogForm() {
+            document.getElementById('logForm').reset();
+            calcTotalWorkforce();
+            showToast('일지 작성 양식이 초기화되었습니다.');
+        }
+
+        function generateReportPrint() {
+            const date = document.getElementById('logDate').value;
+            const site = document.getElementById('logSiteName').value;
+            const weather = document.getElementById('logWeather').value + ' (' + document.getElementById('logTemp').value + ')';
+            const author = document.getElementById('logAuthor').value;
+            const workforce = '총 ' + document.getElementById('totalWorkers').innerText + '명 투입';
+            const equipment = document.getElementById('logEquipment').value;
+            const workDone = document.getElementById('logWorkDone').value;
+            const instructions = '지시사항: ' + document.getElementById('logInstructions').value;
+
+            document.getElementById('prSiteHeader').innerText = '현장명: ' + site;
+            document.getElementById('prDate').innerText = date;
+            document.getElementById('prWeather').innerText = weather;
+            document.getElementById('prAuthor').innerText = author;
+            document.getElementById('prWorkforce').innerText = workforce;
+            document.getElementById('prEquipment').innerText = equipment;
+            document.getElementById('prWorkDone').innerText = workDone;
+            document.getElementById('prInstructions').innerText = instructions;
+
+            const printReport = document.getElementById('printableReport');
+            printReport.classList.remove('hidden');
+
+            window.print();
+        }
+
+        // Construction Calculators Logic
+        function switchCalc(type) {
+            document.querySelectorAll('.calc-box').forEach(el => el.classList.add('hidden'));
+            document.getElementById(`calc-${type}`).classList.remove('hidden');
+
+            document.querySelectorAll('.calc-sub-btn').forEach(btn => {
+                btn.classList.remove('border-sky-500', 'text-sky-600', 'dark:text-sky-400', 'font-bold');
+                btn.classList.add('border-transparent', 'text-slate-500');
+            });
+            const activeSub = document.getElementById(`calc-tab-${type}`);
+            if (activeSub) {
+                activeSub.classList.add('border-sky-500', 'text-sky-600', 'dark:text-sky-400', 'font-bold');
+            }
+        }
+
+        function calcConcrete() {
+            const l = parseFloat(document.getElementById('concL').value) || 0;
+            const w = parseFloat(document.getElementById('concW').value) || 0;
+            const h = parseFloat(document.getElementById('concH').value) || 0;
+            const extra = parseFloat(document.getElementById('concExtra').value) || 0;
+
+            const pure = l * w * h;
+            const total = pure * (1 + extra / 100);
+            const trucks = Math.ceil(total / 6);
+
+            document.getElementById('resConcPure').innerText = pure.toFixed(2) + ' m³';
+            document.getElementById('resConcTotal').innerText = total.toFixed(2) + ' m³';
+            document.getElementById('resConcTrucks').innerText = '약 ' + trucks + ' 대';
+        }
+
+        function calcRebar() {
+            const unitW = parseFloat(document.getElementById('rebarSize').value) || 0;
+            const count = parseInt(document.getElementById('rebarCount').value) || 0;
+            const len = parseFloat(document.getElementById('rebarLen').value) || 0;
+
+            const totalLen = count * len;
+            const totalWeightKg = totalLen * unitW;
+            const totalWeightTon = totalWeightKg / 1000;
+
+            document.getElementById('resRebarLength').innerText = totalLen.toLocaleString() + ' m';
+            document.getElementById('resRebarWeight').innerText = totalWeightKg.toLocaleString(undefined, {maximumFractionDigits:1}) + ' kg (' + totalWeightTon.toFixed(2) + ' ton)';
+        }
+
+        function calcSpi() {
+            const pv = parseFloat(document.getElementById('planSpi').value) || 0.001;
+            const ev = parseFloat(document.getElementById('actSpi').value) || 0;
+
+            const rate = (ev / pv) * 100;
+            const diff = ev - pv;
+            const spi = ev / pv;
+
+            document.getElementById('resSpiRate').innerText = rate.toFixed(1) + '%';
+            document.getElementById('resSpiDiff').innerText = (diff >= 0 ? '+' : '') + diff.toFixed(1) + '% ' + (diff >= 0 ? '(양호)' : '(지연)');
+            document.getElementById('resSpiDiff').className = 'text-xl font-extrabold ' + (diff >= 0 ? 'text-emerald-500' : 'text-rose-500');
+            document.getElementById('resSpiVal').innerText = spi.toFixed(2);
+        }
+
+        function calcSlope() {
+            const l = parseFloat(document.getElementById('slopeL').value) || 0.001;
+            const h = parseFloat(document.getElementById('slopeH').value) || 0;
+
+            const percent = (h / l) * 100;
+            const degree = Math.atan(h / l) * (180 / Math.PI);
+            const diag = Math.sqrt(l * l + h * h);
+
+            document.getElementById('resSlopePercent').innerText = percent.toFixed(1) + ' %';
+            document.getElementById('resSlopeDegree').innerText = degree.toFixed(2) + ' °';
+            document.getElementById('resSlopeDiag').innerText = diag.toFixed(2) + ' m';
+        }
+
+        // Standard Forms Templates
+        const formTemplates = {
+            inspect: `[품질검측 요청서]
+
+수 신 : 건설사업관리단장
+공 종 : 건축공사 (지상층 골조공사)
+부 위 : 지상 8층 8A구간 슬래브 및 기둥
+
+상기 공종에 대하여 아래와 같이 검측 요청하오니 검측하여 주시기 바랍니다.
+
+1. 검측 요청 일시 : 2026년 08월 15일 10:00
+2. 검측 항목 : 
+   - 철근 이음, 정착 길이 및 피복두께 규격 준수 여부
+   - 거푸집 존치 상태 및 동바리 가새 결속 상태
+   - 타설 전 내부 이물질 청소 상태
+3. 첨부 서류 : 시공자 자체 검측 체크리스트 1부.
+
+시공사 현장대리인 : (인)`,
+            report: `[시정지시서 / 안전품질 지시]
+
+문서번호 : CM-2026-0814
+수 신 : 시공사 현장대리인
+발 신 : 건설사업관리 기술인
+
+제목 : 지상 8층 슬래브 단부 개구부 안전난간대 미비 시정지시
+
+1. 귀사의 일일 안전점검 및 시공 노고에 감사드립니다.
+2. 금일 현장 순시 점검 결과, 8층 슬래브 단부 구역의 안전난간대 일부가 탈락되어 추락 위험이 확인되었습니다.
+3. 산업안전보건기준에 의거하여 아래 기한까지 즉시 시정 보강 후 완료 사진을 첨부하여 보고해주시기 바랍니다.
+
+- 시정 기한 : 2026년 08월 14일 17:00 까지
+- 조치 내용 : 수평 안전난간대 재설치 및 안전표지판 게시
+
+책임감리원 : 김 건설 (인)`,
+            status: `[공사 실정보고서]
+
+수 신 : 발주청 (건설사업관리단 경유)
+공사명 : 마곡지구 D-28구역 신축공사
+
+제목 : 지하 외벽 방수공법 변경에 따른 공사 실정보고
+
+1. 관련 : 당초 설계도서 (제12조 방수공사 시방서)
+2. 현장 지반 조건 변경 및 지하수위 상승으로 인하여 기존 시트방수 공법 적용 시 하자 발생 우려가 상존함.
+3. 이에 품질 향상 및 공기 단축을 위해 복합방수 공법으로 변경 검토된 바, 변경 전후 비교표를 첨부하여 실정 보고합니다.
+
+첨부 : 1. 공법 비교 검토서 1부
+       2. 내역서 및 수량산출서 1부.`
+        };
+
+        function loadFormTemplate(key) {
+            document.getElementById('formTextContent').value = formTemplates[key];
+            showToast('서식 템플릿이 로드되었습니다.');
+        }
+
+        function copyFormText() {
+            const textarea = document.getElementById('formTextContent');
+            textarea.select();
+            document.execCommand('copy');
+            showToast('클립보드에 서식이 복사되었습니다!');
+        }
+
+        // Contact Form
+        function handleContactSubmit(e) {
+            e.preventDefault();
+            showToast('문의 메시지가 성공적으로 전송되었습니다.');
+            e.target.reset();
+        }
+
+        // Digital Card Modal Logic
+        function openDigitalCardModal() {
+            document.getElementById('cardModal').classList.remove('hidden');
+        }
+        function closeDigitalCardModal() {
+            document.getElementById('cardModal').classList.add('hidden');
+        }
+
+        // Toast Helper
+        function showToast(msg) {
+            const toast = document.getElementById('toast');
+            document.getElementById('toastMsg').innerText = msg;
+            toast.classList.remove('hidden');
+            toast.classList.add('flex');
+            setTimeout(() => {
+                toast.classList.add('hidden');
+                toast.classList.remove('flex');
+            }, 3000);
+        }
+    </script>
+</body>
+</html>
